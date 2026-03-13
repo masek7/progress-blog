@@ -6,24 +6,22 @@ export async function getStaticPaths() {
   const posts = await getCollection('matematica');
   
   return posts.map(post => {
-    // Tira o .md para a URL da página ficar limpa
     const slugLimpo = post.id.replace(/\.md$/, ''); 
-    
     return {
       params: { slug: slugLimpo },
-      props: { post }, // Passamos o post como um objeto preservado
+      props: { post }, // Passa o post envelopado no objeto props
     };
   });
 }
 
-// Desestrutura o post de dentro de Astro.props
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <BaseLayout title={post.data.title}>
-
-  <a href="/matematica">← Voltar</a>
+  <a href={`${base}/matematica`}>← Voltar</a>
 
   <h1>{post.data.title}</h1>
   <p class="muted">
@@ -33,5 +31,4 @@ const { Content } = await render(post);
   <article>
     <Content />
   </article>
-
 </BaseLayout>

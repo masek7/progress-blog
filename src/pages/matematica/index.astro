@@ -6,20 +6,21 @@ const posts = await getCollection('matematica');
 posts.sort((a, b) => 
   new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
 );
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <BaseLayout title="Matemática">
-
   <h1>Matemática</h1>
   <p class="muted">Tópicos estudados e anotações pessoais.</p>
 
   {posts.map(post => {
-    // Tira o .md do id para o link ficar limpo
+    // Limpa a extensão .md da URL
     const slugLimpo = post.id.replace(/\.md$/, '');
     
     return (
       <article>
-        <a href={`/matematica/${slugLimpo}`}>
+        <a href={`${base}/matematica/${slugLimpo}`}>
           <h2>{post.data.title}</h2>
         </a>
         <p class="muted">
@@ -29,5 +30,4 @@ posts.sort((a, b) =>
       </article>
     )
   })}
-
 </BaseLayout>

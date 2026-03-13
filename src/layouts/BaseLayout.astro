@@ -7,6 +7,9 @@ interface Props {
 }
 
 const { title } = Astro.props;
+
+// Pega a URL base e remove a barra final
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <html lang="pt-BR">
@@ -14,14 +17,14 @@ const { title } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
-    </head>
+  </head>
   <body>
 
     <nav>
-      <a href="/">Home</a>
-      <a href="/matematica">Matemática</a>
-      <a href="/computacao">Computação</a>
-      <a href="/sobre">Sobre</a>
+      <a href={`${base}/`}>Home</a>
+      <a href={`${base}/matematica`}>Matemática</a>
+      <a href={`${base}/computacao`}>Computação</a>
+      <a href={`${base}/sobre`}>Sobre</a>
     </nav>
 
     <main>

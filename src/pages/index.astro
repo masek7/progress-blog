@@ -1,23 +1,27 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Adicionando a variável base aqui também
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <BaseLayout title="Meu Blog">
 
   <h1>Olá, eu sou Guilherme</h1>
-  <p>Estudante de Análise & Desenvolvimento de Sistemas. Aqui registro o que aprendo.</p>
+  <p>Estudante de Análise & Desenvolvimento de Sistemas.
+  Aqui registro o que aprendo.</p>
 
   <h2>Seções</h2>
 
   <article>
-    <a href="/matematica">
+    <a href={`${base}/matematica`}>
       <h2>Matemática</h2>
     </a>
     <p class="muted">Logaritmos, álgebra, cálculo...</p>
   </article>
 
   <article>
-    <a href="/computacao">
+    <a href={`${base}/computacao`}>
       <h2>Computação</h2>
     </a>
     <p class="muted">Algoritmos, estruturas de dados...</p>
