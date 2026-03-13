@@ -1,43 +1,40 @@
-# Astro Starter Kit: Minimal
+# Progress Blog
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Este repositório contém o código-fonte do meu blog pessoal, um espaço dedicado a documentar meus estudos e a minha evolução na jornada para me tornar um Engenheiro de Dados.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Sobre o Projeto e o Experimento com IA
 
-## 🚀 Project Structure
+A infraestrutura técnica deste blog é fruto de um experimento prático de desenvolvimento assistido por Inteligência Artificial. Toda a base de código, incluindo a configuração do framework Astro, a lógica de roteamento dinâmico, a responsividade do CSS e a esteira de publicação automática via GitHub Actions, foi construída e solucionada em conjunto com IA.
 
-Inside of your Astro project, you'll see the following folders and files:
+No entanto, deixo uma regra clara para este espaço: **todo o conteúdo publicado aqui é estritamente autoral**. 
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+Os artigos, resumos e anotações são redigidos inteiramente por mim. Acredito que o ato de escrever, estruturar e explicar conceitos — seja sobre algoritmos, estruturas de dados ou matemática — é uma etapa fundamental para a verdadeira fixação do conhecimento. A IA atua apenas como a arquiteta e construtora do software, nunca como a autora do meu aprendizado.
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Tecnologias Utilizadas
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+* Framework: Astro (Content Layer API)
+* Gerenciamento de Conteúdo: Markdown
+* Estilização: CSS (Puro e responsivo)
+* Hospedagem e CI/CD: GitHub Pages + GitHub Actions
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Como executar localmente
 
-## 🧞 Commands
+Caso queira clonar ou rodar este projeto em sua própria máquina, siga os passos abaixo:
 
-All commands are run from the root of the project, from a terminal:
+1. Clone o repositório:
+   git clone https://github.com/masek7/progress-blog.git
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+2. Acesse o diretório do projeto:
+   cd progress-blog
 
-## 👀 Want to learn more?
+3. Instale as dependências:
+   npm install
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+4. Inicie o servidor de desenvolvimento:
+   npm run dev
+
+O site estará disponível localmente no seu navegador acessando `http://localhost:4321/progress-blog/`.
+
+---
+
+Criado e mantido por Guilherme.

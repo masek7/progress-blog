@@ -64,3 +64,50 @@ article {
   padding-bottom: 2rem;
   border-bottom: 1px solid #222;
 }
+
+/* =========================================
+   CORREÇÕES PARA MOBILE E MARKDOWN
+   ========================================= */
+
+/* 1. Arrumando a navegação no celular */
+@media (max-width: 500px) {
+  nav {
+    justify-content: center; /* Centraliza os links */
+    gap: 1rem; /* Diminui o espaço entre eles */
+    flex-wrap: wrap; /* Permite quebrar a linha se a tela for muito fina */
+  }
+}
+
+/* 2. Devolvendo o recuo dos tópicos (listas) */
+ul, ol {
+  margin-left: 1.5rem; /* Empurra a lista para a direita para caber o ponto */
+  margin-bottom: 1rem;
+}
+
+li {
+  margin-bottom: 0.5rem; /* Dá um respiro entre um item e outro */
+}
+
+/* 3. Prevenindo o próximo bug: Blocos de código vazando a tela */
+pre {
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto; /* Se o código Python for muito longo, cria uma barra de rolagem horizontal automática */
+  margin-bottom: 1rem;
+  background-color: #161618;
+  border: 1px solid #333;
+}
+
+code {
+  font-family: var(--font);
+  background-color: #222;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+pre code {
+  background-color: transparent;
+  padding: 0;
+  font-size: 0.85em;
+}
