@@ -1,17 +1,26 @@
 ---
-
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Meu Blog">
+
+  <h1>Olá, eu sou Guilherme</h1>
+  <p>Estudante de Análise & Desenvolvimento de Sistemas. Aqui registro o que aprendo.</p>
+
+  <h2>Seções</h2>
+
+  <article>
+    <a href="/matematica">
+      <h2>Matemática</h2>
+    </a>
+    <p class="muted">Logaritmos, álgebra, cálculo...</p>
+  </article>
+
+  <article>
+    <a href="/computacao">
+      <h2>Computação</h2>
+    </a>
+    <p class="muted">Algoritmos, estruturas de dados...</p>
+  </article>
+
+</BaseLayout>

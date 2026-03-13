@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = await getCollection('matematica');
+posts.sort((a, b) => 
+  new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
+);
+---
+
+<BaseLayout title="Matemática">
+
+  <h1>Matemática</h1>
+  <p class="muted">Tópicos estudados e anotações pessoais.</p>
+
+  {posts.map(post => {
+    // Tira o .md do id para o link ficar limpo
+    const slugLimpo = post.id.replace(/\.md$/, '');
+    
+    return (
+      <article>
+        <a href={`/matematica/${slugLimpo}`}>
+          <h2>{post.data.title}</h2>
+        </a>
+        <p class="muted">
+          {new Date(post.data.pubDate).toLocaleDateString('pt-BR')}
+        </p>
+        <p>{post.data.description}</p>
+      </article>
+    )
+  })}
+
+</BaseLayout>

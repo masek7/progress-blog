@@ -1,5 +1,8 @@
-// @ts-check
 import { defineConfig } from 'astro/config';
 
-// https://astro.build/config
-export default defineConfig({});
+export default defineConfig({
+  // Substitua pelo seu usuário real do GitHub
+  site: 'https://masek7.github.io',
+  // Substitua pelo nome exato do repositório que você criou no GitHub
+  base: 'progress-blog',
+});

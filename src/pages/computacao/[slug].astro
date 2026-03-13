@@ -1,0 +1,37 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('computacao');
+  
+  return posts.map(post => {
+    // Tira o .md para a URL da página ficar limpa
+    const slugLimpo = post.id.replace(/\.md$/, ''); 
+    
+    return {
+      params: { slug: slugLimpo },
+      props: { post }, // Passamos o post como um objeto preservado
+    };
+  });
+}
+
+// Desestrutura o post de dentro de Astro.props
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout title={post.data.title}>
+
+  <a href="/computacao">← Voltar</a>
+
+  <h1>{post.data.title}</h1>
+  <p class="muted">
+    {new Date(post.data.pubDate).toLocaleDateString('pt-BR')}
+  </p>
+
+  <article>
+    <Content />
+  </article>
+
+</BaseLayout>
