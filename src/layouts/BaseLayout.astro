@@ -1,6 +1,7 @@
 ---
 // 1. O CSS é importado aqui no topo!
 import '../styles/global.css';
+import ThemeToggle from '../components/ThemeToggle.astro';
 
 interface Props {
   title: string;
@@ -10,6 +11,15 @@ const { title } = Astro.props;
 
 // Pega a URL base e remove a barra final
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const pathname = Astro.url.pathname;
+const path = pathname.replace(base, '').replace(/\/$/, '') || '/';
+let currentSection = 'Home';
+if (path.startsWith('/matematica')) currentSection = 'Matemática';
+else if (path.startsWith('/computacao')) currentSection = 'Computação';
+else if (path.startsWith('/python')) currentSection = 'Python';
+else if (path.startsWith('/sql')) currentSection = 'SQL';
+else if (path.startsWith('/sobre')) currentSection = 'Sobre';
 ---
 
 <html lang="pt-BR">
@@ -17,17 +27,41 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
+    <script is:inline>
+      const theme = localStorage.getItem('theme');
+      if (theme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+      } else if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        // Fallback to exactly dark if no theme is strictly light (as default was dark)
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    </script>
   </head>
   <body>
 
-    <nav>
-      <a href={`${base}/`}>Home</a>
-      <a href={`${base}/matematica`}>Matemática</a>
-      <a href={`${base}/computacao`}>Computação</a>
-      <a href={`${base}/python`}>Python</a>
-      <a href={`${base}/sql`}>SQL</a>
-      <a href={`${base}/sobre`}>Sobre</a>
-    </nav>
+    <header class="site-header">
+      <div class="mobile-section-title">{currentSection}</div>
+      <div class="header-actions">
+        <nav class="nav-links" id="nav-menu">
+          <a href={`${base}/`}>Home</a>
+          <a href={`${base}/matematica`}>Matemática</a>
+          <a href={`${base}/computacao`}>Computação</a>
+          <a href={`${base}/python`}>Python</a>
+          <a href={`${base}/sql`}>SQL</a>
+          <a href={`${base}/sobre`}>Sobre</a>
+        </nav>
+        <ThemeToggle />
+        <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
 
     <main>
       <slot />
@@ -37,5 +71,25 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <p class="muted">feito por Guilherme</p>
     </footer>
 
+    <script is:inline>
+      const btn = document.getElementById('menu-toggle');
+      const menu = document.getElementById('nav-menu');
+      if (btn && menu) {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const expanded = btn.getAttribute('aria-expanded') === 'true' || false;
+          btn.setAttribute('aria-expanded', !expanded);
+          menu.classList.toggle('open');
+        });
+        
+        // fecha clique fora
+        document.addEventListener('click', (e) => {
+          if (!btn.contains(e.target) && !menu.contains(e.target)) {
+            menu.classList.remove('open');
+            btn.setAttribute('aria-expanded', false);
+          }
+        });
+      }
+    </script>
   </body>
 </html>

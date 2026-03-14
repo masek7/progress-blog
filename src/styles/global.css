@@ -5,7 +5,20 @@
   --text: #e0e0e0;
   --accent: #a855f7;
   --muted: #888;
+  --surface: #161618;
+  --surface-border: #333;
+  --inline-code-bg: #222;
   --font: 'JetBrains Mono', monospace;
+}
+
+html[data-theme='light'] {
+  --bg: #f7f3ff;
+  --text: #231734;
+  --accent: #7b2cbf;
+  --muted: #7f6a96;
+  --surface: #f0e8ff;
+  --surface-border: #d4c3f2;
+  --inline-code-bg: #e4d8fa;
 }
 
 * {
@@ -22,6 +35,7 @@ body {
   margin: 0 auto;
   padding: 2rem 1.5rem;
   line-height: 1.7;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 a {
@@ -33,11 +47,45 @@ a:hover {
   text-decoration: underline;
 }
 
-nav {
+.site-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 1rem 0 3rem;
+  position: relative;
+}
+
+.mobile-section-title {
+  display: none;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: var(--accent);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-links {
   display: flex;
   gap: 2rem;
-  justify-content: flex-end;
-  padding: 1rem 0 3rem;
+  align-items: center;
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.menu-toggle svg {
+  width: 24px;
+  height: 24px;
 }
 
 h1 {
@@ -62,7 +110,7 @@ p {
 article {
   margin: 2rem 0;
   padding-bottom: 2rem;
-  border-bottom: 1px solid #222;
+  border-bottom: 1px solid var(--surface-border);
 }
 
 /* =========================================
@@ -70,11 +118,42 @@ article {
    ========================================= */
 
 /* 1. Arrumando a navegação no celular */
-@media (max-width: 500px) {
-  nav {
-    justify-content: center; /* Centraliza os links */
-    gap: 1rem; /* Diminui o espaço entre eles */
-    flex-wrap: wrap; /* Permite quebrar a linha se a tela for muito fina */
+@media (max-width: 600px) {
+  .site-header {
+    justify-content: space-between;
+  }
+
+  .mobile-section-title {
+    display: block;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .header-actions {
+    gap: 1rem;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 4rem;
+    right: 0;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    display: none;
+    z-index: 50;
+    align-items: flex-start;
+    min-width: 200px;
+  }
+
+  .nav-links.open {
+    display: flex;
   }
 }
 
@@ -94,13 +173,13 @@ pre {
   border-radius: 6px;
   overflow-x: auto; /* Se o código Python for muito longo, cria uma barra de rolagem horizontal automática */
   margin-bottom: 1rem;
-  background-color: #161618;
-  border: 1px solid #333;
+  background-color: var(--surface);
+  border: 1px solid var(--surface-border);
 }
 
 code {
   font-family: var(--font);
-  background-color: #222;
+  background-color: var(--inline-code-bg);
   padding: 0.2em 0.4em;
   border-radius: 4px;
   font-size: 0.9em;

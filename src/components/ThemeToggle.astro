@@ -1,9 +1,9 @@
 ---
-// ThemeToggle.astro
+// src/components/ThemeToggle.astro
 ---
 
 <div class="theme-toggle-container">
-  <input type="checkbox" id="theme-switch" aria-label="Alternar tema claro/escuro" />
+  <input type="checkbox" id="theme-switch" aria-label="Alternar tema" />
   <label class="toggle-track" for="theme-switch">
     <div class="toggle-thumb">
       <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -24,128 +24,71 @@
   </label>
 </div>
 
-<style is:global>
-  /* Variáveis globais do site */
-  :root {
-    --bg-color: #121212;
-    --text-color: #ffffff;
-  }
-
-  html[data-theme="light"] {
-    --bg-color: #ffffff;
-    --text-color: #333333;
-  }
-
-  body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-</style>
-
 <style>
-  /* Estilos escopados apenas para o interruptor */
-  .theme-toggle-container {
-    /* Removido o position: absolute para que você possa posicioná-lo 
-       livremente usando Flexbox no seu Header principal */
-    display: inline-block;
-  }
-
-  .theme-toggle-container input {
-    display: none;
-  }
-
+  .theme-toggle-container { display: flex; align-items: center; justify-content: center; }
+  .theme-toggle-container input { display: none; }
+  
   .toggle-track {
-    width: 70px;
-    height: 36px;
-    border-radius: 36px;
-    border: 3px solid #b5b9c5;
-    background-color: transparent;
-    display: flex;
-    align-items: center;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    width: 60px; height: 30px; border-radius: 30px;
+    border: 2px solid #b5b9c5; background-color: transparent;
+    display: flex; align-items: center; position: relative;
+    cursor: pointer; transition: all 0.0s ease; /* Removido o transition inicial pra evitar FOUC */
   }
-
+  
   .toggle-thumb {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background-color: #8c93a8;
-    position: absolute;
-    left: 4px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: transform 0.3s ease, background-color 0.3s ease;
+    width: 22px; height: 22px; border-radius: 50%;
+    background-color: #8c93a8; position: absolute; left: 3px;
+    display: flex; justify-content: center; align-items: center;
+    transition: transform 0.0s ease, background-color 0.0s ease; /* Removido pra carregar instantaneamente na posição certa */
   }
+  
+  .toggle-thumb svg { width: 12px; height: 12px; }
+  .icon-moon { stroke: #ffffff; }
+  .icon-sun { display: none; stroke: #a855f7; }
 
-  .toggle-thumb svg {
-    width: 14px;
-    height: 14px;
-  }
-
-  .icon-moon {
-    stroke: #ffffff;
-  }
-
-  .icon-sun {
-    display: none;
-    stroke: #a855f7; /* Seu Roxo */
-  }
-
-  /* ---- ESTADO ATIVO (Sol/Claro) ---- */
-  input:checked + .toggle-track {
-    background-color: #a855f7;
-    border-color: #a855f7;
-  }
-
-  input:checked + .toggle-track .toggle-thumb {
-    transform: translateX(34px);
-    background-color: #ffffff;
-  }
-
-  input:checked + .toggle-track .icon-moon {
-    display: none;
-  }
-
-  input:checked + .toggle-track .icon-sun {
-    display: block;
-  }
+  /* Estado Claro (Sol) via attribute global */
+  html[data-theme='light'] .toggle-track { background-color: #a855f7; border-color: #a855f7; }
+  html[data-theme='light'] .toggle-thumb { transform: translateX(30px); background-color: #ffffff; }
+  html[data-theme='light'] .icon-moon { display: none; }
+  html[data-theme='light'] .icon-sun { display: block; }
+  
+  /* Habilita transição apenas após o carregamento da página */
+  html[data-theme-loaded] .toggle-track { transition: all 0.3s ease; }
+  html[data-theme-loaded] .toggle-thumb { transition: transform 0.3s ease, background-color 0.3s ease; }
 </style>
 
 <script>
-  // O Astro executa isso no cliente automaticamente
-  const themeSwitch = document.getElementById('theme-switch') as HTMLInputElement;
+  function initThemeToggle() {
+    const themeSwitch = document.getElementById('theme-switch') as HTMLInputElement | null;
 
-  // Usa uma função de inicialização imediata para evitar problemas se o script rodar mais de uma vez
-  const initTheme = () => {
-    if (!themeSwitch) return;
-
-    const currentTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    // Define o tema inicial com base no localStorage ou preferência do sistema
-    if (currentTheme === 'light' || (!currentTheme && !prefersDark)) {
-      document.documentElement.setAttribute('data-theme', 'light');
-      themeSwitch.checked = true;
-    } else {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      themeSwitch.checked = false;
-    }
-
-    themeSwitch.addEventListener('change', (e) => {
-      const target = e.target as HTMLInputElement;
-      if (target.checked) {
-        document.documentElement.setAttribute('data-theme', 'light');
-        localStorage.setItem('theme', 'light');
+    if (themeSwitch) {
+      // Sincroniza o estado inicial do botão com o tema do HTML
+      if (document.documentElement.getAttribute('data-theme') === 'light') {
+        themeSwitch.checked = true;
       } else {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
+        themeSwitch.checked = false;
       }
-    });
-  };
+      
+      // Habilita a transição css depois pra evitar animação na carga inicial
+      setTimeout(() => {
+        document.documentElement.setAttribute('data-theme-loaded', 'true');
+      }, 50);
 
-  initTheme();
+      themeSwitch.addEventListener('change', (e) => {
+        const target = e.target as HTMLInputElement;
+        if (target.checked) {
+          document.documentElement.setAttribute('data-theme', 'light');
+          localStorage.setItem('theme', 'light');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+        }
+      });
+    }
+  }
+
+  // Executa na inicialização padrão
+  initThemeToggle();
+  // Executa caso use Astro ViewTransitions futuramente
+  document.addEventListener('astro:after-swap', initThemeToggle);
 </script>
