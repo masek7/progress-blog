@@ -1,0 +1,151 @@
+---
+// ThemeToggle.astro
+---
+
+<div class="theme-toggle-container">
+  <input type="checkbox" id="theme-switch" aria-label="Alternar tema claro/escuro" />
+  <label class="toggle-track" for="theme-switch">
+    <div class="toggle-thumb">
+      <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+      <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </div>
+  </label>
+</div>
+
+<style is:global>
+  /* Variáveis globais do site */
+  :root {
+    --bg-color: #121212;
+    --text-color: #ffffff;
+  }
+
+  html[data-theme="light"] {
+    --bg-color: #ffffff;
+    --text-color: #333333;
+  }
+
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+</style>
+
+<style>
+  /* Estilos escopados apenas para o interruptor */
+  .theme-toggle-container {
+    /* Removido o position: absolute para que você possa posicioná-lo 
+       livremente usando Flexbox no seu Header principal */
+    display: inline-block;
+  }
+
+  .theme-toggle-container input {
+    display: none;
+  }
+
+  .toggle-track {
+    width: 70px;
+    height: 36px;
+    border-radius: 36px;
+    border: 3px solid #b5b9c5;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .toggle-thumb {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: #8c93a8;
+    position: absolute;
+    left: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+
+  .toggle-thumb svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .icon-moon {
+    stroke: #ffffff;
+  }
+
+  .icon-sun {
+    display: none;
+    stroke: #a855f7; /* Seu Roxo */
+  }
+
+  /* ---- ESTADO ATIVO (Sol/Claro) ---- */
+  input:checked + .toggle-track {
+    background-color: #a855f7;
+    border-color: #a855f7;
+  }
+
+  input:checked + .toggle-track .toggle-thumb {
+    transform: translateX(34px);
+    background-color: #ffffff;
+  }
+
+  input:checked + .toggle-track .icon-moon {
+    display: none;
+  }
+
+  input:checked + .toggle-track .icon-sun {
+    display: block;
+  }
+</style>
+
+<script>
+  // O Astro executa isso no cliente automaticamente
+  const themeSwitch = document.getElementById('theme-switch') as HTMLInputElement;
+
+  // Usa uma função de inicialização imediata para evitar problemas se o script rodar mais de uma vez
+  const initTheme = () => {
+    if (!themeSwitch) return;
+
+    const currentTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    // Define o tema inicial com base no localStorage ou preferência do sistema
+    if (currentTheme === 'light' || (!currentTheme && !prefersDark)) {
+      document.documentElement.setAttribute('data-theme', 'light');
+      themeSwitch.checked = true;
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      themeSwitch.checked = false;
+    }
+
+    themeSwitch.addEventListener('change', (e) => {
+      const target = e.target as HTMLInputElement;
+      if (target.checked) {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    });
+  };
+
+  initTheme();
+</script>

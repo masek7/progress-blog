@@ -21,7 +21,29 @@ const computacao = defineCollection({
   }),
 });
 
+const python = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/python' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.coerce.date(),
+    tags: z.array(z.string()).optional(),
+  }),
+});
+
+const sql = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/sql' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.coerce.date(),
+    tags: z.array(z.string()).optional(),
+  }),
+}); 
+
 export const collections = {
   matematica,
   computacao,
+  python,
+  sql,
 };
